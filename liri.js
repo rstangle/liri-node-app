@@ -178,16 +178,45 @@ function spotify() {
 		}
 	}
 	// Kendra helped me with the adding quotes to the string to access the correct song.
-	spotify.search({ type: 'track', query: '"' + songName + '"', limit: 1 }, function(err, data) {
+	if (userInput != "simon-says") {
+		spotify.search({ type: 'track', query: '"' + songName + '"', limit: 1 }, function(err, data) {
   		if (err) {
     		return console.log('Error occurred: ' + err);
   		}
  		
-		console.log("Artist:        " + data.tracks.items[0].artists[0].name);
-		console.log("Song Name:     " + data.tracks.items[0].name);
-		console.log("Album:         " + data.tracks.items[0].album.name);
-		console.log("Preview Song:  " + data.tracks.items[0].preview_url);
-	});
+			console.log("Artist:        " + data.tracks.items[0].artists[0].name);
+			console.log("Song Name:     " + data.tracks.items[0].name);
+			console.log("Album:         " + data.tracks.items[0].album.name);
+			console.log("Preview Song:  " + data.tracks.items[0].preview_url);
+		});
+	}		
+	else {
+		spotify.search({ type: 'track', query: '"' + simonSaysArr + '"', limit: 1 }, function(err, data) {
+  			if (err) {
+    			return console.log('Error occurred: ' + err);
+  			}
+ 		
+			console.log("Artist:        " + data.tracks.items[0].artists[0].name);
+			console.log("Song Name:     " + data.tracks.items[0].name);
+			console.log("Album:         " + data.tracks.items[0].album.name);
+			console.log("Preview Song:  " + data.tracks.items[0].preview_url);
+		});
+	}
+	
+	//If the user enters the simon-says query and the fs.read is "I Want it That Way".
+	// if (userInput == "simon-says") {
+
+	// 	spotify.search({ type: 'track', query: '"' + simonSaysArr + '"', limit: 1 }, function(err, data) {
+ //  		if (err) {
+ //    		return console.log('Error occurred: ' + err);
+ //  		}
+ 		
+	// 	console.log("Artist:        " + data.tracks.items[0].artists[0].name);
+	// 	console.log("Song Name:     " + data.tracks.items[0].name);
+	// 	console.log("Album:         " + data.tracks.items[0].album.name);
+	// 	console.log("Preview Song:  " + data.tracks.items[0].preview_url);
+	// });
+	// }
 };
 
 //******************************************************************************************************************************
@@ -216,13 +245,20 @@ function simonSays() {
     		// var outputStr = "";
 
     		console.log(output[i]);
+    	}
+    	
+    	simonSaysArr.push(output[1]);
+    	console.log("In my array: " + simonSaysArr);
+    	console.log("---------------");
+    	console.log("Simon Says: spotify-this " + simonSaysArr[0]);
+    	// simonSaysArr.join("");
+    	// console.log(simonSaysArr);
 
-    		simonSaysArr.push(output[1]);
-    		console.log("Simon Says: " + simonSaysArr);
-    		// simonSaysArr.join("");
-    		// console.log(simonSaysArr);
+		spotify(simonSaysArr[0]);
+		console.log("---------------");
+		console.log(simonSaysArr[0]);
 
-  			// spotify(simonSaysArr);
-  		}
+		// this one didn't do anything.
+		// spotify(simonSaysArr[0]);
 	});
 };
