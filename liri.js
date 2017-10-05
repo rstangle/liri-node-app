@@ -36,6 +36,8 @@ var userInput = process.argv[2]
 var movieName = "";
 var songName = "";
 
+var simonSaysArr = [];
+
 
 //**************************************************************************************************************************
 //*** BASIC LOGIC **********************************************************************************************************
@@ -56,17 +58,18 @@ if (userInput === "movie-this") {
 		// testing...
 		// console.log("This is the best song!");
 
-} else if (userInput === "do-what-it-says") {
+} else if (userInput === "simon-says") {
 		// do simonSays function
+		simonSays();
 		// testing...
-		console.log("Simon Says do this...");
+		// console.log("Simon Says do this...");
 
 } else {
 	inquirer.prompt([
 	  {
        type: "list",
        message: "Not a valid option. Please choose:",
-       choices: ["my-tweets", "spotify-this-song", "movie-this", "do-what-it-says"],
+       choices: ["my-tweets", "spotify-this-song", "movie-this", "simon-says"],
        name: "confirm"
       }
 	])
@@ -174,12 +177,12 @@ function spotify() {
 	  		}
 		}
 	}
-
+	// Kendra helped me with the adding quotes to the string to access the correct song.
 	spotify.search({ type: 'track', query: '"' + songName + '"', limit: 1 }, function(err, data) {
   		if (err) {
     		return console.log('Error occurred: ' + err);
   		}
- 
+ 		
 		console.log("Artist:        " + data.tracks.items[0].artists[0].name);
 		console.log("Song Name:     " + data.tracks.items[0].name);
 		console.log("Album:         " + data.tracks.items[0].album.name);
@@ -190,3 +193,36 @@ function spotify() {
 //******************************************************************************************************************************
 //***** SIMON SAYS *************************************************************************************************************
 //******************************************************************************************************************************
+
+// This block of code will read from the "random.txt" file.
+// It's important to include the "utf8" parameter or the code will provide stream data (garbage)
+// The code will store the contents of the reading inside the variable "data"
+
+function simonSays() {
+
+
+	fs.readFile("random.txt", "utf8", function(err, data) {
+  		if (err) {
+    		return console.log(err);
+  		}
+
+		// Break the string down by comma separation and store the contents into the output array.
+  		var output = data.split(",");
+  		
+
+		// Loop Through the newly created output array
+  		for (var i = 0; i < output.length; i++) {
+    		// Print each element (item) of the array/
+    		// var outputStr = "";
+
+    		console.log(output[i]);
+
+    		simonSaysArr.push(output[1]);
+    		console.log("Simon Says: " + simonSaysArr);
+    		// simonSaysArr.join("");
+    		// console.log(simonSaysArr);
+
+  			// spotify(simonSaysArr);
+  		}
+	});
+};
